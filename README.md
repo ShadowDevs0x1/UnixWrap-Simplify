@@ -1,9 +1,9 @@
 <br/>
 <div align="center">
-  <h3 align="center">OpCore Simplify</h3>
+  <h3 align="center">UnixWrap-Simplify</h3>
 
   <p align="center">
-    A specialized tool that streamlines <a href="https://github.com/acidanthera/OpenCorePkg">OpenCore</a> EFI creation by automating the essential setup process and providing standardized configurations. Designed to reduce manual effort while ensuring accuracy in your Hackintosh journey.
+    A specialized tool that streamlines <a href="https://github.com/acidanthera/OpenCorePkg">OpenCore</a> EFI creation for UnixWrap by automating the essential setup process and providing standardized configurations. Designed to reduce manual effort while ensuring accuracy in your Hackintosh journey.
     <br />
     <br />
     <a href="#-features">Features</a> •
@@ -13,14 +13,13 @@
     <a href="#-credits">Credits</a> •
     <a href="#-contact">Contact</a>
   </p>
-  
-  <p align="center">
-    <a href="https://trendshift.io/repositories/15410" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15410" alt="lzhoang2801%2FOpCore-Simplify | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-  </p>
 </div>
 
+> [!NOTE]
+> UnixWrap-Simplify is a fork of [OpCore Simplify](https://github.com/lzhoang2801/OpCore-Simplify) by Hoang Hong Quan, adapted for UnixWrap. See [Credits](#-credits).
+
 > [!WARNING]
-> While OpCore Simplify significantly reduces setup time, the Hackintosh journey still requires:
+> While UnixWrap-Simplify significantly reduces setup time, the Hackintosh journey still requires:
 > - Understanding basic concepts from the [Dortania Guide](https://dortania.github.io/OpenCore-Install-Guide/)
 > - Testing and troubleshooting during the installation process
 > - Patience and persistence in resolving any issues that arise
@@ -81,22 +80,22 @@
 
 ## 🚀 **How To Use**
 
-1. **Download OpCore Simplify**:
-   - Click **Code** → **Download ZIP**, or download directly via this [link](https://github.com/lzhoang2801/OpCore-Simplify/archive/refs/heads/main.zip).  
+1. **Download UnixWrap-Simplify**:
+   - Click **Code** → **Download ZIP** on the UnixWrap-Simplify repository page, or clone the repository with `git clone <your-UnixWrap-Simplify-repo-url>`.
    - Extract the downloaded ZIP file to your desired location.
 
-   ![Download OpCore Simplify](https://i.imgur.com/mcE7OSX.png)
+   ![Download UnixWrap-Simplify](https://i.imgur.com/mcE7OSX.png)
 
-2. **Running OpCore Simplify**:
-   - On **Windows**, run `OpCore-Simplify.bat`.
-   - On **macOS**, run `OpCore-Simplify.command`.
-   - On **Linux**, run `OpCore-Simplify.py` with existing Python interpreter.
+2. **Running UnixWrap-Simplify**:
+   - On **Windows**, run `UnixWrap-Simplify.bat`.
+   - On **macOS**, run `UnixWrap-Simplify.command`.
+   - On **Linux**, run `UnixWrap-Simplify.py` with existing Python interpreter.
 
-   ![OpCore Simplify Menu](https://i.imgur.com/vTr1V9D.png)
+   ![UnixWrap-Simplify Menu](https://i.imgur.com/vTr1V9D.png)
 
 3. **Selecting hardware report**:
    - On Windows, there will be an option for `E. Export hardware report`. It's recommended to use this for the best results with your hardware configuration and BIOS at the time of building.
-   - Alternatively, use [**Hardware Sniffer**](https://github.com/lzhoang2801/Hardware-Sniffer) to create a `Report.json` and ACPI dump for configuration manully.
+   - Alternatively, use [**Hardware Sniffer**](https://github.com/lzhoang2801/Hardware-Sniffer) to create a `Report.json` and ACPI dump for configuration manually.
 
    ![Selecting hardware report](https://i.imgur.com/MbRmIGJ.png)
 
@@ -106,10 +105,10 @@
 
 4. **Selecting macOS Version and Customizing OpenCore EFI**:
    - By default, the latest compatible macOS version will be selected for your hardware.
-   - OpCore Simplify will automatically apply essential ACPI patches and kexts. 
+   - UnixWrap-Simplify will automatically apply essential ACPI patches and kexts. 
    - You can manually review and customize these settings as needed.
 
-   ![OpCore Simplify Menu](https://i.imgur.com/TSk9ejy.png)
+   ![UnixWrap-Simplify Menu](https://i.imgur.com/TSk9ejy.png)
 
 5. **Building OpenCore EFI**:
    - Once you've customized all options, select **Build OpenCore EFI** to generate your EFI.
@@ -147,16 +146,16 @@ Distributed under the BSD 3-Clause License. See `LICENSE` for more information.
 
 ## 🙌 **Credits**
 
+- [OpCore Simplify](https://github.com/lzhoang2801/OpCore-Simplify) by Hoang Hong Quan – the original project this fork is based on.
 - [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) and [kexts](https://github.com/lzhoang2801/OpCore-Simplify/blob/main/Scripts/datasets/kext_data.py) – The backbone of this project.
 - [SSDTTime](https://github.com/corpnewt/SSDTTime) – SSDT patching utilities.
 
 ## 📞 **Contact**
 
-**Hoang Hong Quan**
+**UnixWrap-Simplify maintainer**
+> Add your contact details here.
+
+**Original OpCore Simplify author — Hoang Hong Quan**
 > Facebook [@macforce2601](https://facebook.com/macforce2601) &nbsp;&middot;&nbsp;
 > Telegram [@lzhoang2601](https://t.me/lzhoang2601) &nbsp;&middot;&nbsp;
 > Email: lzhoang2601@gmail.com
-
-## 🌟 **Star History**
-
-[![Star History Chart](https://star-history.dera.page/svg?repos=lzhoang2801/OpCore-Simplify&type=Date)](https://star-history.dera.page/#lzhoang2801/OpCore-Simplify&Date)
