@@ -20,7 +20,7 @@ import time
 
 class OCPE:
     def __init__(self):
-        self.u = utils.Utils("OpCore Simplify")
+        self.u = utils.Utils("UnixWrap-Simplify")
         self.u.clean_temporary_dir()
         self.ac = acpi_guru.ACPIGuru()
         self.c = compatibility_checker.CompatibilityChecker()
@@ -178,7 +178,7 @@ class OCPE:
 
             print("")
             print("\033[1;93mNote:\033[0m")
-            print("- To select a major version, enter the number (e.g., 19).")
+            print("- Enter the Darwin major version from the list (e.g., 19). macOS Golden Gate 27 uses Darwin 26.")
             print("- To specify a full version, use the Darwin version format (e.g., 22.4.6).")
             print("")
             print("Q. Quit")

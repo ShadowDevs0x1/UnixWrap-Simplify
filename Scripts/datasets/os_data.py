@@ -14,7 +14,8 @@ macos_versions = [
     macOSVersionInfo("Ventura", "13"),
     macOSVersionInfo("Sonoma", "14"),
     macOSVersionInfo("Sequoia", "15"),
-    macOSVersionInfo("Tahoe", "26")
+    macOSVersionInfo("Tahoe", "26"),
+    macOSVersionInfo("Golden Gate", "27")
 ]
 
 def get_latest_darwin_version(include_beta=True):

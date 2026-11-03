@@ -11,7 +11,7 @@ import zipfile
 import tempfile
 
 class Utils:
-    def __init__(self, script_name = "OpCore Simplify"):
+    def __init__(self, script_name = "UnixWrap-Simplify"):
         self.script_name = script_name
 
     def clean_temporary_dir(self):
