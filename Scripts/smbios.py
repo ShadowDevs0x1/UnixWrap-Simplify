@@ -1,4 +1,4 @@
-from Scripts.datasets.mac_model_data import mac_devices
+from Scripts.datasets.mac_model_data import mac_devices, get_mac_device_by_name
 from Scripts.datasets import kext_data
 from Scripts.datasets import os_data
 from Scripts import gathering_files
@@ -53,18 +53,20 @@ class SMBIOS:
         return random_mac
 
     def generate_smbios(self, smbios_model):
-        macserial = self.check_macserial()
-
         random_mac_address = self.generate_random_mac()
-
-        output = self.run({
-            "args":[macserial, "-g", "--model", smbios_model]
-        })
-        
-        if not output or output[-1] != 0 or not output[0] or " | " not in output[0]:
+        device = get_mac_device_by_name(smbios_model)
+        if device and device.architecture == "Apple Silicon":
+            print("Apple Silicon profile selected: macserial cannot generate serials for this model; using placeholder serial and MLB values.")
             serial = []
         else:
-            serial = output[0].splitlines()[0].split(" | ")
+            macserial = self.check_macserial()
+            output = self.run({
+                "args":[macserial, "-g", "--model", smbios_model]
+            })
+            if not output or output[-1] != 0 or not output[0] or " | " not in output[0]:
+                serial = []
+            else:
+                serial = output[0].splitlines()[0].split(" | ")
 
         return {
             "MLB": "A" + "0"*15 + "Z" if not serial else serial[-1],
@@ -92,6 +94,39 @@ class SMBIOS:
     
     def select_smbios_model(self, hardware_report, macos_version):
         platform = "NUC" if "NUC" in hardware_report.get("Motherboard").get("Name") else hardware_report.get("Motherboard").get("Platform")
+        if self.utils.parse_darwin_version(macos_version) >= self.utils.parse_darwin_version("26.0.0"):
+            core_count = int(hardware_report.get("CPU").get("Core Count", "0"))
+            if platform == "Laptop":
+                if core_count <= 2:
+                    return "Mac17,5"
+                if core_count <= 4:
+                    return "MacBookAir10,1"
+                if core_count <= 6:
+                    return "Mac14,2"
+                if core_count <= 8:
+                    return "Mac15,12"
+                if core_count <= 10:
+                    return "Mac16,12"
+                if core_count <= 12:
+                    return "Mac17,3"
+                if core_count <= 14:
+                    return "Mac17,9"
+                return "Mac17,7"
+
+            if core_count <= 4:
+                return "Macmini9,1"
+            if core_count <= 6:
+                return "Mac14,3"
+            if core_count <= 8:
+                return "Mac15,4"
+            if core_count <= 10:
+                return "Mac16,10"
+            if core_count <= 12:
+                return "Mac18,5"
+            if core_count <= 16:
+                return "Mac17,14"
+            return "Mac17,15"
+
         codename = hardware_report.get("CPU").get("Codename")
 
         smbios_model = "MacBookPro16,2" if "Laptop" in platform else "iMacPro1,1" if self.utils.parse_darwin_version(macos_version) < self.utils.parse_darwin_version("25.0.0") else "MacPro7,1"
@@ -161,12 +196,12 @@ class SMBIOS:
         return smbios_model
     
     def customize_smbios_model(self, hardware_report, selected_smbios_model, macos_version):
-        current_category = None
         default_smbios_model = self.select_smbios_model(hardware_report, macos_version)
         show_all_models = False
         is_laptop = "Laptop" == hardware_report.get("Motherboard").get("Platform")
 
         while True:
+            current_category = None
             incompatible_models_by_index = []
             contents = []
             contents.append("")
@@ -176,22 +211,25 @@ class SMBIOS:
                 contents.append("List of compatible SMBIOS:")
             for index, device in enumerate(mac_devices, start=1):
                 isSupported = self.utils.parse_darwin_version(device.initial_support) <= self.utils.parse_darwin_version(macos_version) <= self.utils.parse_darwin_version(device.last_supported_version)
-                if device.name not in (default_smbios_model, selected_smbios_model) and not show_all_models and (not isSupported or (is_laptop and not device.name.startswith("MacBook")) or (not is_laptop and device.name.startswith("MacBook"))):
+                if device.name not in (default_smbios_model, selected_smbios_model) and not show_all_models and (not isSupported or (is_laptop and device.form_factor != "laptop") or (not is_laptop and device.form_factor == "laptop")):
                     incompatible_models_by_index.append(index - 1)
                     continue
 
-                category = ""
-                for char in device.name:
-                    if char.isdigit():
-                        break
-                    category += char
+                category = "{} series".format(device.cpu.split(" ", 1)[0]) if device.architecture == "Apple Silicon" else device.category or ""
+                if not category:
+                    for char in device.name:
+                        if char.isdigit():
+                            break
+                        category += char
                 if category != current_category:
                     current_category = category
                     category_header = "Category: {}".format(current_category if current_category else "Uncategorized")
                     contents.append(f"\n{category_header}\n" + "=" * len(category_header))
                 checkbox = "[*]" if device.name == selected_smbios_model else "[ ]"
-                
-                line = "{} {:2}. {:15} - {:10} {:20}{}".format(checkbox, index, device.name, device.cpu, "({})".format(device.cpu_generation), "" if not device.discrete_gpu else " - {}".format(device.discrete_gpu))
+                if device.architecture == "Apple Silicon":
+                    line = "{} {:2}. {:15} - {}".format(checkbox, index, device.name, device.product_name)
+                else:
+                    line = "{} {:2}. {:15} - {:10} {:20}{}".format(checkbox, index, device.name, device.cpu, "({})".format(device.cpu_generation), "" if not device.discrete_gpu else " - {}".format(device.discrete_gpu))
                 if device.name == selected_smbios_model:
                     line = "\033[1;32m{}\033[0m".format(line)
                 elif not isSupported:

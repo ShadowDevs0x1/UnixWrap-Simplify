@@ -78,6 +78,7 @@
    - Custom ACPI patches, kexts, and SMBIOS adjustments (**not recommended**).
    - Force load kexts on unsupported macOS versions.
    - UnixWrap `#UnixWrap -> BootMethod` defaults to `Interpreter only`; change it in the generated `config.plist` to `JIT only` or `JIT + AOT` if desired. AOT is not implemented yet, so the combined mode currently runs JIT only.
+   - macOS Golden Gate 27 automatically defaults to an Apple Silicon product profile. The profile is selected coarsely from the hardware report's CPU core count and laptop/desktop form factor; it is not a benchmark-equivalent SoC selection. Apple Silicon serials are not supported by the bundled `macserial`, so generated profiles use placeholder serial/MLB values and are not suitable for Apple online services. The currently verified M6 entry is the base M6 Mac mini; no M6 Pro/Max/Ultra product identifiers are added without a reliable published identifier.
 
 ## 🚀 **How To Use**
 
