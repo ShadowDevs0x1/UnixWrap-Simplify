@@ -10,13 +10,19 @@ from Scripts import smbios
 from Scripts import utils
 import random
 
+UNIXWRAP_BOOT_METHODS = ("JIT + AOT", "JIT only", "Interpreter only")
+
 def configure_unixwrap_config(config, smbios_model):
     unixwrap = config.setdefault("#UnixWrap", {})
     if not isinstance(unixwrap, dict):
         raise ValueError("#UnixWrap must be a dictionary in the OpenCore sample config")
 
     model = config["PlatformInfo"]["Generic"].get("SystemProductName", smbios_model)
+    boot_method = unixwrap.get("BootMethod")
+    if boot_method not in UNIXWRAP_BOOT_METHODS:
+        boot_method = "Interpreter only"
     unixwrap.update({
+        "BootMethod": boot_method,
         "IPSWPath": unixwrap.get("IPSWPath", ""),
         "SMBIOSSpoof": "Auto",
         "SystemType": "Laptop" if model.startswith("MacBook") else "Desktop",
