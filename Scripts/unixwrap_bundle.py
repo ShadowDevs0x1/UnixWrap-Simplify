@@ -14,7 +14,7 @@ DEFAULT_PACKAGE_URL = (
     "v1.0.0/UnixWrap-X64-RELEASE.zip"
 )
 DEFAULT_PACKAGE_SHA256 = (
-    "8d12333f649ba01ba7fb9cefcfa6e3132528e86e83ed1bc3acb494f9193a207e"
+    "fd8875c1a05b1eeccf338b7ea438c6907448d1c80e46b6a2b921249a7b44915a"
 )
 DEFAULT_BOOT_CFG_URL = (
     "https://github.com/ShadowDevs0x1/UnixWrap/releases/download/"
