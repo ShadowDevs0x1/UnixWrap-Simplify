@@ -9,6 +9,7 @@ from Scripts import kext_maestro
 from Scripts import report_validator
 from Scripts import run
 from Scripts import smbios
+from Scripts import unixwrap_bundle
 from Scripts import utils
 import updater
 import os
@@ -259,6 +260,34 @@ class OCPE:
 
         self.u.progress_bar(title, steps, 3)
         self.co.genarate(hardware_report, disabled_devices, smbios_model, macos_version, needs_oclp, self.k.kexts, config_data)
+        unixwrap_dir = os.environ.get(
+            "UNIXWRAP_DIR",
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "UnixWrap")
+        )
+        unixwrap_dir = os.path.abspath(os.path.expanduser(unixwrap_dir))
+        unixwrap_bundle.stage_unixwrap_bundle(
+            unixwrap_dir,
+            self.result_dir,
+            config_data,
+            package_url=os.environ.get(
+                "UNIXWRAP_PACKAGE_URL", unixwrap_bundle.DEFAULT_PACKAGE_URL
+            ),
+            package_sha256=os.environ.get(
+                "UNIXWRAP_PACKAGE_SHA256", unixwrap_bundle.DEFAULT_PACKAGE_SHA256
+            ),
+            boot_cfg_url=os.environ.get(
+                "UNIXWRAP_BOOT_CFG_URL", unixwrap_bundle.DEFAULT_BOOT_CFG_URL
+            ),
+            boot_cfg_sha256=os.environ.get(
+                "UNIXWRAP_BOOT_CFG_SHA256", unixwrap_bundle.DEFAULT_BOOT_CFG_SHA256
+            ),
+            ram_img_url=os.environ.get(
+                "UNIXWRAP_RAM_IMG_URL", unixwrap_bundle.DEFAULT_RAM_IMG_URL
+            ),
+            ram_img_sha256=os.environ.get(
+                "UNIXWRAP_RAM_IMG_SHA256", unixwrap_bundle.DEFAULT_RAM_IMG_SHA256
+            ),
+        )
         self.u.write_file(config_file, config_data)
 
         self.u.progress_bar(title, steps, 4)

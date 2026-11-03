@@ -115,6 +115,18 @@
 5. **Building OpenCore EFI**:
    - Once you've customized all options, select **Build OpenCore EFI** to generate your EFI.
    - The tool will automatically download the necessary bootloader and kexts, which may take a few minutes.
+   - UnixWrap is staged at `EFI/APPLE/X64/BOOT.EFI`. Simplify uses the sibling UnixWrap checkout's `run/boot.cfg` and `run/ram.img` when both exist; if either is missing, it downloads both files from the UnixWrap v1.0.0 release and verifies their SHA-256 hashes. The guest image is about 503 MiB. The EFI and these guest files are staged with the OpenCore configuration, so the complete `Results` folder can be copied to the USB root.
+
+     The published guest image is a prebuilt macOS 27.0.1 guest for Mac14,3. It boots that prepared image; it does not browse for or extract arbitrary IPSWs from USB at firmware runtime. To use another IPSW, prepare it on the host and catalog it in the sibling UnixWrap checkout before building:
+
+     ```sh
+     cd /path/to/UnixWrap
+     python3 boot/prepare_ipsw.py /Volumes/YourUSB/macOS.ipsw
+     python3 boot/catalog_ipsw.py /Volumes/YourUSB/macOS.ipsw \
+       --efi-path 'PciRoot(...)/.../HD(...,GPT,<esp-partition-guid>,...)/\EFI\APPLE\X64\BOOT.EFI'
+     ```
+
+     Use the full UEFI device path for the target USB's EFI partition. Simplify carries the catalog entries and extracted icons from `UnixWrap/boot/config.plist` into its generated EFI. Only the IPSW used to prepare the guest image can boot. The build downloads and SHA-256 verifies the precompiled EFI as well as `boot.cfg` and `ram.img` when needed. Set `UNIXWRAP_PACKAGE_URL` and `UNIXWRAP_PACKAGE_SHA256` to use another EFI release, or `UNIXWRAP_DIR` if the checkout is not in the default sibling location.
 
    ![WiFi Profile Extractor](https://i.imgur.com/71TkJkD.png)
 
