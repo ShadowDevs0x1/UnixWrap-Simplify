@@ -167,7 +167,7 @@ Distributed under the BSD 3-Clause License. See `LICENSE` for more information.
 ## 📞 **Contact**
 
 **UnixWrap-Simplify maintainer**
-> Add your contact details here.
+> 
 
 **Original OpCore Simplify author — Hoang Hong Quan**
 > Facebook [@macforce2601](https://facebook.com/macforce2601) &nbsp;&middot;&nbsp;
